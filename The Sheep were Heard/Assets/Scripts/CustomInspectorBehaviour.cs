@@ -14,7 +14,6 @@ public class CompositeBehaviourEditor : Editor
         CompositeBehaviour cb = (CompositeBehaviour)target;
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Hello");
 
         //check for behaviours
         if (cb.behaviours == null || cb.behaviours.Length == 0)
@@ -32,6 +31,7 @@ public class CompositeBehaviourEditor : Editor
             EditorGUILayout.LabelField("Weights", GUILayout.MaxWidth(50));
             EditorGUILayout.LabelField(cb.weights.Length.ToString(), GUILayout.MaxWidth(50));
             EditorGUILayout.EndHorizontal();
+            
             EditorGUI.BeginChangeCheck();
 
             for (int i = 0; i < cb.behaviours.Length; i++)
@@ -68,41 +68,41 @@ public class CompositeBehaviourEditor : Editor
 
     }
 
- // helklo
+    #region Add or Remove behaviour
     void AddBehaviour(CompositeBehaviour cb)
+    {
+        int oldCount = (cb.behaviours != null) ? cb.behaviours.Length : 0;
+        FlockBehaviour[] newBehaviours = new FlockBehaviour[oldCount + 1];
+        float[] newWeights = new float[oldCount + 1];
+        for (int i = 0; i < oldCount; i++)
         {
-            int oldCount = (cb.behaviours != null) ? cb.behaviours.Length : 0;
-            FlockBehaviour[] newBehaviours = new FlockBehaviour[oldCount + 1];
-            float[] newWeights = new float[oldCount + 1];
-            for (int i = 0; i < oldCount; i++)
-            {
-                newBehaviours[i] = cb.behaviours[i];
-                newWeights[i] = cb.weights[i];
-            }
-            newWeights[oldCount] = 1f;
-            cb.behaviours = newBehaviours;
-            cb.weights = newWeights;
+            newBehaviours[i] = cb.behaviours[i];
+            newWeights[i] = cb.weights[i];
         }
+        newWeights[oldCount] = 1f;
+        cb.behaviours = newBehaviours;
+        cb.weights = newWeights;
+    }
 
-        void RemoveBehaviour(CompositeBehaviour cb)
+    void RemoveBehaviour(CompositeBehaviour cb)
+    {
+        int oldCount = cb.behaviours.Length;
+        if (oldCount == 1)
         {
-            int oldCount = cb.behaviours.Length;
-            if (oldCount == 1)
-            {
-                cb.behaviours = null;
-                cb.weights = null;
-                return;
-            }
-            FlockBehaviour[] newBehaviours = new FlockBehaviour[oldCount - 1];
-            float[] newWeights = new float[oldCount - 1];
-            for (int i = 0; i < oldCount - 1; i++)
-            {
-                newBehaviours[i] = cb.behaviours[i];
-                newWeights[i] = cb.weights[i];
-            }
-            cb.behaviours = newBehaviours;
-            cb.weights = newWeights;
+            cb.behaviours = null;
+            cb.weights = null;
+            return;
         }
-
+        FlockBehaviour[] newBehaviours = new FlockBehaviour[oldCount - 1];
+        float[] newWeights = new float[oldCount - 1];
+        for (int i = 0; i < oldCount - 1; i++)
+        {
+            newBehaviours[i] = cb.behaviours[i];
+            newWeights[i] = cb.weights[i];
+        }
+        cb.behaviours = newBehaviours;
+        cb.weights = newWeights;
+    }
+    #endregion
 
 }
