@@ -116,6 +116,7 @@ public class Flock : MonoBehaviour
             );
 
             newAgent.name = "Agent " + agentNumber++;
+            newAgent.Initialise(this); // agent belongs to this flock script
             agents.Add(newAgent);
 
         };

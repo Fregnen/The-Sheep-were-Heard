@@ -11,6 +11,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class FlockAgent : MonoBehaviour
 {
+    Flock agentFlock;
+    public Flock AgentFlock { get { return agentFlock; } }
     Collider agentCollider;
 
     // A public accessor method for the collider
@@ -21,6 +23,11 @@ public class FlockAgent : MonoBehaviour
     {
         // Find the instance of a collider attatched to this object
         agentCollider = GetComponent<Collider>();
+    }
+
+    public void Initialise(Flock flock)
+    {
+        agentFlock = flock;
     }
 
     public void Move(Vector2 velocity){
